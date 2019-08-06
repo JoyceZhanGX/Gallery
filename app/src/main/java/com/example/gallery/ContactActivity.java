@@ -4,33 +4,33 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactActivity extends AppCompatActivity {
 
-    ArrayAdapter<String> adapter;
-    List<String> contactList = new ArrayList<>();
+    private ContactAdapter adapter;
+    private List<String> contactList = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        ListView contactView = findViewById(R.id.contact_list);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contactList);
-        contactView.setAdapter(adapter);
+        initViews();
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                readContacts();
-            }
-        });
+        new LoadContactAsyncTask().execute();
+    }
+
+    private void initViews(){
+        recyclerView = findViewById(R.id.contact_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void readContacts() {
@@ -44,15 +44,29 @@ public class ContactActivity extends AppCompatActivity {
                     String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     contactList.add(number);
                 }
+                adapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("Exception", e.toString());
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
+    }
 
+    private class LoadContactAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            readContacts();
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            adapter = new ContactAdapter(contactList);
+            recyclerView.setAdapter(adapter);
+            super.onPostExecute(aVoid);
+        }
     }
 }

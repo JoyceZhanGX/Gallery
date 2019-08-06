@@ -7,28 +7,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
-    private ArrayList<String> imageUrls;
-    private Context context;
+    private List<String> imageUrls;
 
-    public ImageAdapter(Context context, ArrayList<String> imageUrls) {
-        this.context = context;
+    ImageAdapter(List<String> imageUrls) {
         this.imageUrls = imageUrls;
 
     }
 
+    @NotNull
     @Override
-    public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.grid_item_layout, viewGroup, false);
+    public ImageAdapter.ViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.grid_item_layout, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Glide.with(context).load(imageUrls.get(i)).into(viewHolder.img);
+    public void onBindViewHolder(@NotNull ViewHolder viewHolder, int i) {
+        Context ctx = viewHolder.itemView.getContext();
+        Glide.with(ctx)
+                .load(imageUrls.get(i))
+                .into(viewHolder.img);
     }
 
     @Override
@@ -36,11 +40,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return imageUrls.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             img = view.findViewById(R.id.imageView);
         }

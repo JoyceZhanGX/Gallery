@@ -10,36 +10,35 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GalleryActivity extends AppCompatActivity {
 
-    ArrayList<String> photoList = new ArrayList<>();
+    private List<String> photoList = new ArrayList<>();
 
     private ImageView imageView;
-    RecyclerView recyclerView;
-    GridLayoutManager gridLayoutManager;
-    ArrayList<ImageUri> imageUrlList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private GridLayoutManager gridLayoutManager;
+    private ImageAdapter dataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
-        recyclerView = (RecyclerView) findViewById(R.id.photoView);
+        initViews();
+
+        new LoadImageAsyncTask().execute();
+    }
+
+    private void initViews(){
+        imageView =  findViewById(R.id.imageView);
+
+        recyclerView = findViewById(R.id.photoView);
         gridLayoutManager = new GridLayoutManager(GalleryActivity.this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                loadImages();
-            }
-        });
 
-        ImageAdapter dataAdapter = new ImageAdapter(getApplicationContext(), photoList);
-
-        recyclerView.setAdapter(dataAdapter);
     }
 
     private void loadImages() {
@@ -53,12 +52,29 @@ public class GalleryActivity extends AppCompatActivity {
                     photoList.add(data);
                 }
             }
+
+            dataAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
+        }
+    }
+
+    private class LoadImageAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            loadImages();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            dataAdapter = new ImageAdapter( photoList);
+            recyclerView.setAdapter(dataAdapter);
+            super.onPostExecute(aVoid);
         }
     }
 }
