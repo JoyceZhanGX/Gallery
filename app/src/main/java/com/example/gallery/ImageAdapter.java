@@ -26,12 +26,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
-    /**
-     * gets the image url from adapter and passes to Glide API to load the image
-     *
-     * @param viewHolder
-     * @param i
-     */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Glide.with(context).load(imageUrls.get(i)).into(viewHolder.img);
