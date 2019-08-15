@@ -1,4 +1,4 @@
-package com.example.gallery;
+package com.example.gallery.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.gallery.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private List<String> imageUrls;
 
-    ImageAdapter(List<String> imageUrls) {
+    public ImageAdapter(List<String> imageUrls) {
         this.imageUrls = imageUrls;
 
     }

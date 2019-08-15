@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import com.example.gallery.mvvm.contact.ContactActivity;
+import com.example.gallery.mvvm.gallery.GalleryActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         initViews();
         setListeners();
     }
+
+
+    /* -------------------------------------------------------------------------------------------*/
+    /* Internal helpers */
 
     private void initViews() {
         openContactBtn = findViewById(R.id.contact);

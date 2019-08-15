@@ -4,10 +4,10 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.gallery.adapters.ImageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ public class GalleryActivity extends AppCompatActivity {
 
     private List<String> photoList = new ArrayList<>();
 
-    private ImageView imageView;
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private ImageAdapter dataAdapter;
@@ -32,13 +31,9 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-        imageView =  findViewById(R.id.imageView);
-
         recyclerView = findViewById(R.id.photoView);
         gridLayoutManager = new GridLayoutManager(GalleryActivity.this, 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-
+        recyclerView = findViewById(R.id.photoView);
     }
 
     private void loadImages() {

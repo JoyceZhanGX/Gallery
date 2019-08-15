@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.gallery.adapters.ContactAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,20 @@ public class ContactActivity extends AppCompatActivity {
         new LoadContactAsyncTask().execute();
     }
 
+    /* -------------------------------------------------------------------------------------------*/
+    /* Internal helpers */
+
+    /*
+     * Init View
+     */
     private void initViews(){
         recyclerView = findViewById(R.id.contact_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /*
+     * Read Contacts using cursor from ContentResolver()
+     */
     private void readContacts() {
         Cursor cursor = null;
 
@@ -55,6 +65,10 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
+
+    /*
+     * Inner class of AsyncTask
+     */
     private class LoadContactAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
